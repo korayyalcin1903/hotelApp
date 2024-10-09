@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body data-bs-theme="dark">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center position-fixed top-0 start-50 translate-middle-x mb-3 bg-dark" id="user">
+            <div class="card px-3">
+                <div class="row align-items-center">
+                    <div class="col-2">
+                        <i class="bi bi-person fs-3"></i>
+                    </div>
+                    <div class="col-10">
+                        <div class="row mt-2">
+                            <p class="col-6">Michael Scoot</p>
+                            <p class="col-6">Oda Numarası: 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr style="margin-top: 5rem;">
+
+
+        <%- include('../partials/content') %>
+
+        <div class="d-flex justify-content-center align-items-center position-fixed bottom-0 start-50 translate-middle-x pb-3 bg-dark" id="entry-input">
+            <input type="text" class="form-control border-warning-subtle py-3" aria-label="Dollar amount (with dot and two decimal places)">
+            <button class="input-group-text px-3 py-3 btn btn-outline-warning"><i class="bi bi-arrow-up"></i></button>
+        </div>
+    </div>
+</body>
+</html>
