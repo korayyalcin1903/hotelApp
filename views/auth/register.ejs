@@ -7,19 +7,27 @@
     <div class="container d-flex justify-content-center my-3">
         <div class="card">
             <div class="row">
-                <div class="col-6 d-none d-sm-block d-md-block">
-                    <div class="w-100">
-                        <img src="/static/images/login-hotel.jpg" class="img-fluid" alt="">
+                <div class="col-12 col-sm-6 col-md-6 d-none d-sm-block d-md-block" >
+                    <div class="w-100 h-100">
+                        <img src="/static/images/register-background.jpeg" class="img-fluid w-100 h-100" alt="">
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 d-flex align-items-center justify-content-center">
                     <div class="row">
-                        <h3 class="mt-5 text-center col-12">Login</h3>
+                        <h3 class="mt-5 text-center col-12">Register</h3>
                         <form method="post" class="col-12">
                             <div class="">
                                 <div class="mb-3 mt-5 mx-5">
-                                    <label for="username" class="form-label mb-3">Username</label>
+                                    <label for="username" class="form-label mb-3">Kullanıcı Adı</label>
                                     <input type="text" name="username" class="form-control">
+                                </div>
+                                <div class="mb-3 mt-5 mx-5">
+                                    <label for="email" class="form-label mb-3">Email</label>
+                                    <input type="email" name="email" class="form-control">
+                                </div>
+                                <div class="mb-3 mt-5 mx-5">
+                                    <label for="roomNumber" class="form-label mb-3">Oda Numarası</label>
+                                    <input type="number" name="roomNumber" class="form-control">
                                 </div>
                                 <div class="mb-3 mt-5 mx-5">
                                     <label for="password" class="form-label mb-3">Password</label>
