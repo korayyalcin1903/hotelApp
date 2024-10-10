@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body data-bs-theme="dark">
+    <%- include('../partials/admin-nav') %>
+    <div class="container d-flex justify-content-center my-3">
+        <table class="table ">
+            <thead>
+                <tr class="table-bordered">
+                    <td>ID</td>
+                    <td>Adı</td>
+                    <td>İçerik</td>
+                    <td>Ücret</td>
+                    <td>Mevcut</td>
+                    <td></td>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr>
+                    <td>#1</td>
+                    <td>Mix Pizza</td>
+                    <td>
+                        Sucuk, Kaşar, Mantar, Yumurta, Un, Su, Süt
+                    </td>
+                    <td>300 ₺</td>
+                    <td>+</td>
+                    <td>
+                        <a href="/admin/menu/edit/1" class="btn btn-outline-warning">Edit</a>
+                        <a href="/admin/menu/delete/1" class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body data-bs-theme="dark">
+    <%- include('../partials/admin-nav') %>
+    <div class="container text-center my-3">
+        <div>
+            <span>#1</span> numaralı <b class="text-danger">mix pizza</b> adlı menüyü silmek istediğinize emin misiniz?
+        </div>
+        <br>
+        <form action="" method="post">
+            <input type="hidden" name="menuid" value="menuid">
+            <div>
+                <a href="" class="btn btn-outline-danger">Evet</a>
+                <a href="/admin/menu" class="btn btn-outline-success">Hayır</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
