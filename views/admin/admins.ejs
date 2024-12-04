@@ -12,8 +12,6 @@
                     <td>ID</td>
                     <td>Ad Soyad</td>
                     <td>kullanici adi</td>
-                    <td>Oda numarası</td>
-                    <td>Telefon numarası</td>
                     <td>Oluşturma Tarihi</td>
                     <td></td>
                 </tr>
@@ -25,12 +23,10 @@
                         <td><%= user.id %></td> <!-- user.id ile dinamik olarak kullanıcı ID'sini yazdırıyoruz -->
                         <td><%= user.name %></td> <!-- user.name ile dinamik olarak kullanıcı adını yazdırıyoruz -->
                         <td><%= user.username %></td> <!-- user.username ile dinamik olarak kullanıcı email'ini yazdırıyoruz -->
-                        <td><%= user.roomNumber %></td> <!-- user.username ile dinamik olarak kullanıcı email'ini yazdırıyoruz -->
-                        <td><%= user.phone %></td> <!-- user.username ile dinamik olarak kullanıcı email'ini yazdırıyoruz -->
                         <td><%= user.createdAt.toLocaleString() %></td> <!-- user.createdAt ile oluşturulma tarihini yazdırıyoruz -->
                         <td>
-                            <a href="/admin/users/edit/<%= user.id %>" class="btn btn-outline-warning">Düzenle</a>
-                            <a href="/admin/users/delete/<%= user.id %>" class="btn btn-outline-danger">Sil</a>
+                            <a href="/admin/admins/edit/<%= user.id %>" class="btn btn-outline-warning">Düzenle</a>
+                            <a href="/admin/admins/delete/<%= user.id %>" class="btn btn-outline-danger">Sil</a>
                         </td>
                     </tr>
                 <% }); %> <!-- Döngü kapanıyor -->

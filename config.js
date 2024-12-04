@@ -3,7 +3,7 @@ const config = {
         host: 'localhost',
         user: 'root',
         password: '3131',
-        database: 'hotel_db'
+        database: 'hotelapp'
     }
 }
 

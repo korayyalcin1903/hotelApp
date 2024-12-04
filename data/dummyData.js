@@ -9,32 +9,43 @@ exports.dummyData = async () => {
         const admin = await Admin.bulkCreate([
             {
                 "name": "Admin",
-                "email": "admin@example.com",
+                "username": "admin",
                 "password": "admin"
             }
         ])
 
         const customers = await Customer.bulkCreate([
             {
+                "name": "admin",
+                "username": "admin",
+                "password": "1234",
+                "roomNumber": 0,
+                "phone": 0,
+                "isAdmin": 1
+            },
+            {
                 "name": "Ali Yılmaz",
-                "email": "ali.yilmaz@example.com",
+                "username": "ali.yilmaz",
                 "password": "securepassword123",
                 "roomNumber": 101,
-                "phone": 5551234567
+                "phone": 5551234567,
+                "isAdmin": 0
             },
             {
                 "name": "Ayşe Demir",
-                "email": "ayse.demir@example.com",
+                "username": "ayse.demir",
                 "password": "mypassword456",
                 "roomNumber": 102,
-                "phone": 5559876543
+                "phone": 5559876543,
+                "isAdmin": 0
             },
             {
                 "name": "Mehmet Öztürk",
-                "email": "mehmet.ozturk@example.com",
+                "username": "mehmet.ozturk",
                 "password": "passw0rd789",
                 "roomNumber": 103,
-                "phone": 5554567890
+                "phone": 5554567890,
+                "isAdmin": 0
             }
         ])
 
@@ -63,15 +74,27 @@ exports.dummyData = async () => {
         const orders = await Order.bulkCreate([
             {
                 "status": "Pending",
-                "totalPrice": 150.75
+                "price": 150.75,
+                "quantity": 3,
+                "menu_item_id": 1,
+                "customer_id": 2,
+                "roomNumber": 101
             },
             {
                 "status": "Completed",
-                "totalPrice": 89.50
+                "price": 89.50,
+                "quantity": 3,
+                "menu_item_id": 2,
+                "customer_id": 1,
+                "roomNumber": 101
             },
             {
                 "status": "Cancelled",
-                "totalPrice": 0.00
+                "price": 0.00,
+                "quantity": 3,
+                "menu_item_id": 3,
+                "customer_id":3,
+                "roomNumber": 101
             }
         ]
         )

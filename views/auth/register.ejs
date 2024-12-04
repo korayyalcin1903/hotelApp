@@ -14,16 +14,21 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 d-flex align-items-center justify-content-center">
                     <div class="row">
-                        <h3 class="mt-5 text-center col-12">Register</h3>
+                        <h3 class="mt-5 text-center col-12">Kayıt Ol</h3>
                         <form method="post" class="col-12">
                             <div class="">
                                 <div class="mb-3 mt-5 mx-5">
                                     <label for="username" class="form-label mb-3">Ad Soyad</label>
-                                    <input type="text" name="username" class="form-control">
+                                    <input type="text" name="name" class="form-control">
                                 </div>
                                 <div class="mb-3 mt-5 mx-5">
-                                    <label for="email" class="form-label mb-3">Email</label>
-                                    <input type="email" name="email" class="form-control">
+                                    <label for="email" class="form-label mb-3">Kullanıcı adı</label>
+                                    <input type="text" name="username" class="form-control">
+                                    <% if (message) { %>
+                                        <script type="text/javascript">
+                                            alert("<%= message %>"); // message değişkenini JavaScript alert ile göster
+                                        </script>
+                                    <% } %>
                                 </div>
                                 <div class="mb-3 mt-5 mx-5">
                                     <label for="roomNumber" class="form-label mb-3">Oda Numarası</label>
@@ -38,7 +43,7 @@
                                     <input type="password" name="password" class="form-control">
                                 </div>
                                 <div class="d-flex justify-content-center my-5">
-                                    <button type="submit" class="btn btn-outline-light d-block w-75">Login</button>
+                                    <button type="submit" class="btn btn-outline-light d-block w-75">Kayıt Ol</button>
                                 </div>
                             </div>
                         </form>

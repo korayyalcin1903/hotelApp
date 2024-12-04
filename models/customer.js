@@ -6,7 +6,7 @@ const Customer = sequelize.define('customer', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -21,9 +21,14 @@ const Customer = sequelize.define('customer', {
     phone: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
-    timestamps: true
-})
+    timestamps: true,
+    freezeTableName: true  // Tablo adı 'customer' olarak kalacak, pluralize edilmez
+});
 
-module.exports = Customer
+module.exports = Customer;

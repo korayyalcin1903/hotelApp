@@ -6,32 +6,32 @@
 <body data-bs-theme="dark">
     <%- include('../partials/admin-nav') %>
     <div class="container d-flex justify-content-center my-3">
-        <table class="table ">
+        <table class="table">
             <thead>
                 <tr class="table-bordered">
                     <td>ID</td>
                     <td>Adı</td>
-                    <td>İçerik</td>
-                    <td>Ücret</td>
+                    <td>Açıklama</td>
+                    <td>Fiyat</td>
                     <td>Mevcut</td>
-                    <td></td>
+                    <td>İşlemler</td>
                 </tr>
             </thead>
             
             <tbody>
-                <tr>
-                    <td>#1</td>
-                    <td>Mix Pizza</td>
-                    <td>
-                        Sucuk, Kaşar, Mantar, Yumurta, Un, Su, Süt
-                    </td>
-                    <td>300 ₺</td>
-                    <td>+</td>
-                    <td>
-                        <a href="/admin/menu/edit/1" class="btn btn-outline-warning">Edit</a>
-                        <a href="/admin/menu/delete/1" class="btn btn-outline-danger">Delete</a>
-                    </td>
-                </tr>
+                <% menus.forEach(menu => { %> <!-- Veritabanından gelen menülerle döngü başlatıyoruz -->
+                    <tr>
+                        <td><%= menu.id %></td>
+                        <td><%= menu.name %></td>
+                        <td><%= menu.description %></td>
+                        <td><%= menu.price %> ₺</td>
+                        <td><%= menu.availability ? 'Evet' : 'Hayır' %></td>
+                        <td>
+                            <a href="/admin/menu/edit/<%= menu.id %>" class="btn btn-outline-warning">Düzenle</a>
+                            <a href="/admin/menu/delete/<%= menu.id %>" class="btn btn-outline-danger">Sil</a>
+                        </td>
+                    </tr>
+                <% }) %> <!-- Döngü bitiyor -->
             </tbody>
         </table>
     </div>

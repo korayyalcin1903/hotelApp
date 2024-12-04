@@ -6,25 +6,36 @@
 <body data-bs-theme="dark">
     <%- include('../partials/admin-nav') %>
     <div class="container d-flex justify-content-center my-3">
-        <table class="table ">
+        <table class="table">
             <thead>
                 <tr class="table-bordered">
-                    <td>ID</td>
-                    <td>Customer ID</td>
-                    <td>Order Date</td>
-                    <td>Status</td>
-                    <td>Total Price</td>
+                    <th>ID</th>
+                    <th>Müşteri</th>
+                    <th>Sipariş İçeriği</th>
+                    <th>Adet</th>
+                    <th>Fiyat</th>
+                    <th>Oda Numarası</th>
+                    <th>Oluşturulma Tarihi</th>
+                    <th>Durum</th>
                 </tr>
             </thead>
-            
             <tbody>
-                <tr>
-                    <td>#1</td>
-                    <td>#302948</td>
-                    <td>10.10.2024 - 10.15</td>
-                    <td>Hazırlanıyor</td>
-                    <td>3000 ₺</td>
-                </tr>
+                <% orders.forEach(order => { %>
+                    <tr>
+                        <td>#<%= order.id %></td>
+                        <td><%= order.customer ? order.customer.name : 'Bilinmiyor' %></td>
+                        <td><%= order.menu ? order.menu.name : 'Bilinmiyor' %></td>
+                        <td><%= order.quantity %></td>
+                        <td><%= order.price.toFixed(2) %> ₺</td>
+                        <td><%= order.customer ? order.customer.roomNumber : 'Bilinmiyor' %></td>
+                        <td><%= new Date(order.createdAt).toLocaleString('tr-TR') %></td>
+                        <td><%= order.status %></td>
+                        <td>
+                            <a href="/admin/order/edit/<%= order.id %>" class="btn btn-outline-warning">Düzenle</a>
+                            <a href="/admin/order/delete/<%= order.id %>" class="btn btn-outline-danger">Sil</a>
+                        </td>
+                    </tr>
+                <% }) %>
             </tbody>
         </table>
     </div>
