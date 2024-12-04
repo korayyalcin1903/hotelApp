@@ -8,7 +8,7 @@ allergen_list = []
 
 def menu_list(allergen_list):
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM menu_items WHERE availability = TRUE")
+    cursor.execute("SELECT * FROM hotel_db.menu_items WHERE availability = TRUE")
     yemek_listesi = cursor.fetchall()
 
 

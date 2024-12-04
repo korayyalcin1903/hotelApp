@@ -30,7 +30,7 @@ const dummyData = require('./data/dummyData')
 relations.relations()
 
 async function data() {
-    await sequelize.sync({force: true})
+    await sequelize.sync({force: false})
     await dummyData.dummyData()
 }
 
