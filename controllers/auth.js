@@ -36,16 +36,18 @@ exports.post_login = async (req, res) => {
         // JWT token oluştur
         const token = generateToken(user);
 
+        req.session.isAuth = true; 
         req.session.isAdmin = user.isAdmin; 
         req.session.username = user.username;
         req.session.userid = user.id;
+        req.session.token = token;
 
         console.log(req.session);
 
         // Token'i kullanıcıya döndür
-        return res.json({
-            message: 'Giriş başarılı.',
-            token: token, // Token frontend'e JSON formatında gönderilir
+        return res.render('home/', {
+            message: "test",
+            title: "Home"
         });
 
     } catch (error) {

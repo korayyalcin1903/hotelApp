@@ -1,13 +1,13 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../data/db')
 
-const Menu = sequelize.define('menu', {
+const Menu = sequelize.define('menu_items', {
     name: {
         type: DataTypes.STRING,
         allowNull: false
     },
     description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     price: {
@@ -16,7 +16,7 @@ const Menu = sequelize.define('menu', {
     },
     availability: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        allowNull: false
     }
 })
 

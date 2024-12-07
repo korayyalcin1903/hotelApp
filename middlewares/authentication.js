@@ -22,7 +22,7 @@ exports.generateToken = (user) => {
 
 // 2) JWT kontrol etme (Middleware)
 exports.verifyToken = async (req, res, next) => {
-    const token = req.headers['authorization'];
+    const token = req.session.token
 
     if (!token) {
         return res.redirect('/auth/login'); // Token eksikse yönlendir
@@ -42,7 +42,7 @@ exports.verifyToken = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        console.error('JWT kontrolü sırasında hata:', error);
+        console.log('JWT kontrolü sırasında hata:', error);
         return res.redirect('/auth/login'); // Token geçersizse yönlendir
     }
 };

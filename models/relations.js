@@ -9,7 +9,4 @@ exports.relations = () => {
 
     Order.hasMany(OrderDetail, {foreignKey:'order_id'})
     OrderDetail.belongsTo(Order, {foreignKey:'order_id'})
-
-    Menu.hasMany(OrderDetail, {foreignKey: 'menu_item_id'})
-    OrderDetail.belongsTo(Menu, {foreignKey: 'menu_item_id'})
 }

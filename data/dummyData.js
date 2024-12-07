@@ -1,4 +1,3 @@
-const Admin = require('../models/admin')
 const Customer = require('../models/customer')
 const Menu = require('../models/menu')
 const Order = require('../models/order')
@@ -6,13 +5,6 @@ const OrderDetail = require('../models/orderDetail')
 
 exports.dummyData = async () => {
     if(await Customer.count() === 0) {
-        const admin = await Admin.bulkCreate([
-            {
-                "name": "Admin",
-                "username": "admin",
-                "password": "admin"
-            }
-        ])
 
         const customers = await Customer.bulkCreate([
             {
@@ -49,50 +41,19 @@ exports.dummyData = async () => {
             }
         ])
 
-        const menu = await Menu.bulkCreate([
-            {
-                "name": "Pizza Margherita",
-                "description": "Domates, mozzarella, taze fesleğen",
-                "price": 85.50,
-                "availability": true
-            },
-            {
-                "name": "Spaghetti Bolognese",
-                "description": "Kıyma, domates sosu, sarımsak, soğan, parmesan peyniri",
-                "price": 60.00,
-                "availability": true
-            },
-            {
-                "name": "Caesar Salata",
-                "description": "Marul, tavuk, kruton, parmesan, ceasar sosu",
-                "price": 45.00,
-                "availability": false
-            }
-        ]
-        )
-
         const orders = await Order.bulkCreate([
             {
-                "status": "Pending",
-                "price": 150.75,
-                "quantity": 3,
-                "menu_item_id": 1,
+                "totalPrice": 150.75,
                 "customer_id": 2,
                 "roomNumber": 101
             },
             {
-                "status": "Completed",
-                "price": 89.50,
-                "quantity": 3,
-                "menu_item_id": 2,
+                "totalPrice": 89.50,
                 "customer_id": 1,
                 "roomNumber": 101
             },
             {
-                "status": "Cancelled",
-                "price": 0.00,
-                "quantity": 3,
-                "menu_item_id": 3,
+                "totalPrice": 0.00,
                 "customer_id":3,
                 "roomNumber": 101
             }
@@ -102,15 +63,21 @@ exports.dummyData = async () => {
         const orderDetails = await OrderDetail.bulkCreate([
             {
                 "quantity": 2,
-                "price": 50.00
+                "menu_item_id": 1,
+                "price": 50.00,
+                "order_id": 1
             },
             {
                 "quantity": 1,
-                "price": 30.50
+                "menu_item_id": 2,
+                "price": 30.50,
+                "order_id": 2
             },
             {
                 "quantity": 5,
-                "price": 12.99
+                "menu_item_id": 2,
+                "price": 30.50,
+                "order_id": 1
             }
         ]
         )
@@ -121,10 +88,7 @@ exports.dummyData = async () => {
 
         await orderDetails[0].setOrder(orders[0])
         await orderDetails[1].setOrder(orders[1])
-        await orderDetails[2].setOrder(orders[2])
+        await orderDetails[2].setOrder(orders[1])
 
-        await orderDetails[0].setMenu(menu[0])
-        await orderDetails[1].setMenu(menu[1])
-        await orderDetails[2].setMenu(menu[2])
     }
 }

@@ -6,8 +6,16 @@ const OrderDetail = sequelize.define('order_detail', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    menu_item_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     price: {
         type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    order_id: {
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 })

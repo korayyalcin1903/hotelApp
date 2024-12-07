@@ -17,12 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware: Session
 app.use(
     session({
-        secret: 'bst4_123', // Güçlü bir gizli anahtar kullanın
-        resave: false, // Her istekte yeniden kaydedilmesini engeller
-        saveUninitialized: false, // Boş oturumların kaydedilmesini engeller
+        secret: 'bst4_123', 
+        resave: false,
+        saveUninitialized: false,
         cookie: {
-            secure: false, // HTTPS için true yapabilirsiniz
-            maxAge: 1000 * 60 * 60 * 24, // 1 gün geçerli
+            secure: false,
+            maxAge: 1000 * 60 * 60 * 24, 
         },
     })
 );
@@ -36,10 +36,10 @@ app.use('/', homeRoutes);
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 
+
 // Veritabanı modelleri ve ilişkileri
-const admin = require('./models/admin');
 const customer = require('./models/customer');
-const menu = require('./models/menu');
+// const menu = require('./models/menu');
 const order = require('./models/order');
 const orderDetail = require('./models/orderDetail');
 

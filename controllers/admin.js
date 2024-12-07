@@ -1,5 +1,4 @@
 const sequelize = require('../data/db')
-const admin = require('../models/admin');
 const customer = require('../models/customer');
 const Menu = require('../models/menu'); 
 const Order = require('../models/order');
@@ -15,7 +14,7 @@ exports.get_admin_index = (req, res) => { // yönlendirme
 exports.get_admins = async (req, res) => {
     try {
         // Veritabanından tüm adminleri alıyoruz
-        const users = await admin.findAll({
+        const users = await customer.findAll({
             attributes: ['id', 'name', 'username', 'password',  'createdAt', 'updatedAt'] // İstediğiniz kolonları belirtiyoruz
         });
 
@@ -37,7 +36,7 @@ exports.get_edit_admins = async (req, res) => {
         const adminId = req.params.userid;
 
         // Adminin bilgilerini veritabanından çekiyoruz
-        const user = await admin.findOne({ where: { id: adminId } });
+        const user = await customer.findOne({ where: { id: adminId } });
 
         // Eğer admin bulunamazsa hata mesajı dönüyoruz
         if (!user) {
@@ -62,7 +61,7 @@ exports.post_edit_admins = async (req, res) => {  // adminin bilgilerini değiş
         const { name,username, password } = req.body; // Formdan gelen veriler
 
         // Veritabanında güncelleme işlemi yapıyoruz
-        await admin.update(
+        await customer.update(
             { name, username, password },
             { where: { id: adminId } }
         );
@@ -80,7 +79,7 @@ exports.post_delete_admins = async (req, res) => {
         const adminId = req.params.userid; // Admin id'sini URL'den alıyoruz
 
         // Veritabanında admini silme işlemi
-        await admin.destroy({
+        await customer.destroy({
             where: { id: adminId }
         });
 
@@ -288,13 +287,10 @@ exports.get_order = async (req, res) => {
                     as: 'customer',
                     attributes: ['name' , 'roomNumber']
                 },
-                {
-                    model: Menu,
-                    as: 'menu',
-                    attributes: ['name'] // Sadece yemek adını alıyoruz
-                }
             ]
         });
+
+        console.log(orders)
 
         // View'e gönderiyoruz
         res.render('admin/order', {
@@ -303,7 +299,7 @@ exports.get_order = async (req, res) => {
         });
     } catch (error) {
         console.error('Siparişler yüklenirken bir hata oluştu:', error);
-        res.status(500).send('Siparişler yüklenirken bir hata oluştu.');
+        res.send('Siparişler yüklenirken bir hata oluştu.');
     }
 };
 
