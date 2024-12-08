@@ -4,17 +4,6 @@ const router = express.Router()
 const adminController = require('../controllers/admin');
 const isAdmin = require('../middlewares/isAdmin');
 
-router.get('/', adminController.get_admin_index); //  /admin adresini yönlendirir
-
-
-
-
-
-router.get('/admins', isAdmin, adminController.get_admins)
-router.get('/admins/edit/:userid', isAdmin, adminController.get_edit_admins)
-router.get('/admins/delete/:userid', isAdmin, adminController.post_delete_admins)
-router.post('/admins/edit/:userid', isAdmin, adminController.post_edit_admins); 
-
 
 router.get('/users', isAdmin, adminController.get_users)
 router.get('/users/edit/:userid', isAdmin, adminController.get_edit_users)
@@ -34,6 +23,7 @@ router.post('/menu/create', isAdmin, adminController.post_menu_create)
 
 
 router.get('/order', adminController.get_order);
+router.get('/order/:orderid', adminController.get_order_details);
 router.get('/order/edit/:orderid', isAdmin, adminController.get_order_edit)
 router.get('/order/delete/:orderid', isAdmin, adminController.get_order_delete)
 router.post('/order/edit/:orderid', isAdmin, adminController.post_edit_order)

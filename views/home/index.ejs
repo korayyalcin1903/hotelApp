@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <%- include('../partials/head') %>
+    <%- include('../partials/head'), {name: name, roomNumber: roomNumber} %>
     <style>
         html {
             scroll-behavior: smooth;
@@ -12,11 +12,11 @@
 <body data-bs-theme="dark">
     <%- include('../partials/nav') %>
     <div class="container">
-
+        <input type="hidden" name="userid" id="userid" value="<%= userid %>">
         <hr style="margin-top: 5rem;">
 
         <div class="mx-md-5  d-flex flex-column">
-            <div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Merhaba size nasıl yardımcı olabilirim?</div>
+            <div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Merhaba <b><%= name %></b> size nasıl yardımcı olabilirim?</div>
         </div>
         
         <div class="row mx-md-5 mb-3 justify-content-center">

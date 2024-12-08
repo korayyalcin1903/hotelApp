@@ -5,6 +5,6 @@ const homeController = require('../controllers/home')
 const isAuth = require('../middlewares/isAuth')
 const { verifyToken } = require('../middlewares/authentication')
 
-router.get('/', homeController.index)
+router.get('/', isAuth, homeController.index)
 
 module.exports = router

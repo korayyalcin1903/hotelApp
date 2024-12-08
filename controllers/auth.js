@@ -39,16 +39,22 @@ exports.post_login = async (req, res) => {
         req.session.isAuth = true; 
         req.session.isAdmin = user.isAdmin; 
         req.session.username = user.username;
+        req.session.name = user.name;
+        req.session.roomNumber = user.roomNumber;
         req.session.userid = user.id;
         req.session.token = token;
 
-        console.log(req.session);
-
-        // Token'i kullanıcıya döndür
-        return res.render('home/', {
-            message: "test",
-            title: "Home"
-        });
+        if(req.session.isAdmin){
+            return res.redirect('/admin/order')
+        } else {
+            return res.render('home/', {
+                message: "test",
+                title: "Home",
+                name: req.session.name,
+                roomNumber: req.session.roomNumber,
+                userid: req.session.userid 
+            });
+        }
 
     } catch (error) {
         console.error('Giriş sırasında bir hata oluştu:', error);
@@ -99,4 +105,15 @@ exports.post_register = async (req, res) => {
         console.error('Kayıt sırasında bir hata oluştu:', error);
         res.status(500).json({ error: 'Bir hata oluştu. Lütfen tekrar deneyin.' });
     }
+};
+
+exports.get_logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Session temizlenirken bir hata oluştu:', err);
+            return res.status(500).send('Bir hata oluştu.');
+        }
+        
+        res.redirect('/auth/login');
+    });
 };

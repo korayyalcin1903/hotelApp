@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body data-bs-theme="dark">
+    <%- include('../partials/admin-nav') %>
+    <div class="container justify-content-center my-3">
+        <table class="table table-striped table-bordered">
+
+            <tr>
+                <td>Order Id</td><td><%= order.id %></td>
+            </tr>
+            <tr>
+                <td>Customer Name</td><td><%= customer.name %></td>
+            </tr>
+            <tr>
+                <td>Room Number</td><td><%= customer.roomNumber %></td>
+            </tr>
+            <tr>
+                <td>Order Date</td><td><%= new Date(order.createdAt).toLocaleString('tr-TR') %></td>
+            </tr>
+            <tr>
+                <td>Total Amount</td><td><%= order.totalPrice %> ₺</td>
+            </tr>
+        
+        </table>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Product Id</td>
+                    <td>Name</td>
+                    <td>Price</td>
+                    <td>Amount</td>
+                </tr>
+            </thead>
+            <tbody>
+                <% menu.forEach(food => { %>
+                    <tr>
+                        <td><%= food.id %></td>
+                        <td><%= food.menuItemName %></td>
+                        <td><%= food.price %></td>
+                        <td><%= food.quantity %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -142,22 +142,19 @@ content.addEventListener('click', (e) => {
         
         let selectedItems = [];
         
-        // Menü verilerini alalım
         menuList("menü").then((menu) => {
             menu.payload.menu.forEach(food => {
                 const checkbox = document.getElementById("menu-" + food.id);
                 
-                // Checkbox seçiliyse, öğe eklenir
                 if (checkbox.checked) {
                     selectedItems.push({
                         menu_item_id: food.id,
-                        quantity: 1,  // Varsayılan quantity = 1
+                        quantity: 1,
                         price: food.price
                     });
                 }
             });
 
-            // Seçilen ürünleri konsola yazdıralım
             console.log("Seçilen ürünler:", selectedItems);
             console.log(selectedItems.length)
             selectedItems.forEach(item => {

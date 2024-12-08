@@ -8,5 +8,6 @@ module.exports = (req, res, next) => {
         req.session.message = {text: 'Yetkili bir kullanıcı ile oturum açınız.'}
         return res.redirect('/auth/login')
     }
+
     next()
 }

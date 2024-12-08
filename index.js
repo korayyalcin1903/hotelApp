@@ -37,18 +37,12 @@ app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 
 
-// Veritabanı modelleri ve ilişkileri
-const customer = require('./models/customer');
-// const menu = require('./models/menu');
-const order = require('./models/order');
-const orderDetail = require('./models/orderDetail');
-
 const relations = require('./models/relations');
 const dummyData = require('./data/dummyData');
 relations.relations();
 
 async function data() {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     await dummyData.dummyData();
 }
 

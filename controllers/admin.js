@@ -1,96 +1,11 @@
-const sequelize = require('../data/db')
+const { where, Op } = require('sequelize');
+const sequelize = require('../data/db');
+const Customer = require('../models/customer');
 const customer = require('../models/customer');
 const Menu = require('../models/menu'); 
 const Order = require('../models/order');
 const Orders = require('../models/order'); 
-
-
-exports.get_admin_index = (req, res) => { // yönlendirme
-    // /admin adresine gelen istek, /admin/admins'e yönlendirilecek
-    res.redirect('/admin/admins');
-};
-
-
-exports.get_admins = async (req, res) => {
-    try {
-        // Veritabanından tüm adminleri alıyoruz
-        const users = await customer.findAll({
-            attributes: ['id', 'name', 'username', 'password',  'createdAt', 'updatedAt'] // İstediğiniz kolonları belirtiyoruz
-        });
-
-        
-        res.render('admin/admins', {
-            title: 'Users',
-            users: users // Admin verilerini gönderiyoruz
-        });
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).send('Something went wrong while fetching users.');
-    }
-};
-
-
-exports.get_edit_admins = async (req, res) => {
-    try {
-        // URL'den admin id'sini alıyoruz (userid)
-        const adminId = req.params.userid;
-
-        // Adminin bilgilerini veritabanından çekiyoruz
-        const user = await customer.findOne({ where: { id: adminId } });
-
-        // Eğer admin bulunamazsa hata mesajı dönüyoruz
-        if (!user) {
-            return res.status(404).send('Admin not found');
-        }
-
-        // Adminin verileri ile şablona render yapıyoruz
-        res.render('admin/admin-edit', { // Şablon adı admin-edit
-            title: 'Edit User',
-            user: user // Adminin verilerini şablona gönderiyoruz
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
-    }
-};
-
-
-exports.post_edit_admins = async (req, res) => {  // adminin bilgilerini değiştir
-    try {
-        const adminId = req.params.userid; // Admin id'sini URL'den alıyoruz
-        const { name,username, password } = req.body; // Formdan gelen veriler
-
-        // Veritabanında güncelleme işlemi yapıyoruz
-        await customer.update(
-            { name, username, password },
-            { where: { id: adminId } }
-        );
-
-        // Güncelleme işlemi sonrası yönlendirme veya başarı mesajı
-        res.redirect('/admin/admins'); // Adminleri listeleme sayfasına yönlendiriyoruz
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
-    }
-}
-
-exports.post_delete_admins = async (req, res) => {
-    try {
-        const adminId = req.params.userid; // Admin id'sini URL'den alıyoruz
-
-        // Veritabanında admini silme işlemi
-        await customer.destroy({
-            where: { id: adminId }
-        });
-
-        // Silme işlemi sonrası yönlendirme veya başarı mesajı
-        res.redirect('/admin/admins'); // Kullanıcıyı listeleme sayfasına yönlendiriyoruz
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
-    }
-}
-
+const OrderDetail = require('../models/orderDetail');
 
 
 exports.get_users = async (req, res) => {
@@ -303,6 +218,63 @@ exports.get_order = async (req, res) => {
     }
 };
 
+exports.get_order_details = async (req, res) => {
+    try {
+        const orderid = req.params.orderid;
+
+        const order = await Order.findOne({
+            where: { id: orderid },
+            include: [
+                {
+                    model: OrderDetail,
+                    as: 'order_details',
+                    attributes: ['menu_item_id', 'quantity', 'price'],
+                },
+                {
+                    model: Customer,
+                    as: 'customer', 
+                    attributes: ['name', 'roomNumber'] 
+                }
+            ]
+        });
+
+        const menu_item_ids = order.order_details.map(orderDetail => orderDetail.menu_item_id);
+
+        var menu_items = await Menu.findAll({
+            where: {
+                id: {
+                    [Op.in]: menu_item_ids
+                }
+            }
+        })
+
+        var menu = order.order_details.map(orderDetail => {
+            const menuItem = menu_items.find(item => item.id === orderDetail.menu_item_id);
+
+            return {
+                id: orderDetail.menu_item_id,
+                quantity: orderDetail.quantity,
+                price: orderDetail.price,
+                menuItemName: menuItem ? menuItem.name : 'Unknown Menu Item'
+            };
+        });
+
+        if (!order) {
+            return res.status(404).send('Order not found');
+        }
+
+        res.render('admin/order-details', { 
+            title: order.roomNumber,
+            order: order,
+            orderDetails: order.order_details,
+            customer: order.customer,
+            menu: menu
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+};
 
 exports.get_order_edit = async (req, res) => {
     try {
