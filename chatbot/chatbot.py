@@ -46,6 +46,13 @@ def alerji():
 
     response_text = "Merhaba, herhangi bir alerjiniz var mı?"
 
+    if any(greeting in user_message.lower() for greeting in [""]):
+        return menu_list(allergen_list)
+
+    if any(greeting in user_message.lower() for greeting in ["temizle"]):
+        allergen_list.clear()
+        return allergen_list
+
     if siparisler:
         cursor = mysql.connection.cursor()
         

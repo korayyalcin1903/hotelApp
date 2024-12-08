@@ -4,6 +4,17 @@ var content = document.getElementById('content')
 var mesaj = document.getElementById('mesaj')
 var mesajButton = document.getElementById('mesajButton')
 var user_id = document.getElementById('userid').value
+var bellekCleanButton = document.getElementById('bellekCleanButton')
+
+function scrolldown() {
+    setTimeout(function () {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+        scrolldown();
+    }, 2000);
+}
 
 window.onload = () => {
     mesaj.disabled = true;
@@ -16,21 +27,25 @@ servisButton.onclick = () => {
     menuButton.disabled = true;
     content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Lütfen mesajınızı giriniz.</div>`)
     mesaj.disabled = false;
+    scrolldown()
 }
 
 mesajButton.onclick = () => {
-    mesaj.innerHTML = "";
     if(servisButton.classList.contains('btn-success')){
         oda_servis(user_id, mesaj.value)
         content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Mesajınız iletilmiştir.</div>`)
+        mesaj.value = ""
+        mesaj.disabled = true;
     }
 
     var evet = document.querySelector('.evet');
 
+    scrolldown()
+
     if(evet.classList.contains('btn-warning')){
         menuList(mesaj.value).then((messages) => {
             content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">${messages.fulfillmentText}</div>`)
-            mesaj.innerHTML = "";
+            mesaj.value = "";
         })
         menuList("menü").then((menu) => {
             menu.payload.menu.forEach(food => {
@@ -48,9 +63,12 @@ mesajButton.onclick = () => {
                                                     });
                 content.insertAdjacentHTML('beforeend', `<button class="btn btn-outline-success mt-3" id="siparisVer"> Sipariş ver </button>`)
         })
+        scrolldown()
     }
 
     mesaj.disabled = true;
+
+    scrolldown()
 }
 
 async function menuList(user_message) {
@@ -85,6 +103,8 @@ menuButton.onclick = () => {
     menuButton.disabled = true;
     servisButton.disabled = true;
 
+    scrolldown()
+
     if (menuButton.classList.contains('btn-success')) {
         menuList("merhaba").then((messages) => {
             content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">${messages.fulfillmentText}</div>`);
@@ -102,8 +122,10 @@ menuButton.onclick = () => {
             var evet = document.querySelector('.evet');
             var hayir = document.querySelector('.hayir');
 
+            scrolldown()
+
             evet.onclick = () => {
-                mesaj.innerHTML = "";
+                mesaj.value = "";
                 mesaj.disabled = false;
                 evet.disabled = true
                 evet.classList.remove('btn-danger')
@@ -131,6 +153,8 @@ menuButton.onclick = () => {
                 content.insertAdjacentHTML('beforeend', `<button class="btn btn-outline-success mt-3" id="siparisVer"> Sipariş ver </button>`)
                 })
             };
+
+            scrolldown()
         });
     }
 };
@@ -162,7 +186,7 @@ content.addEventListener('click', (e) => {
 
             if(selectedItems.length >0 && totalPrice > 0){
                 siparis(totalPrice, selectedItems)
-                content.innerHTML = "";
+                content.value = "";
                 content.insertAdjacentHTML("beforeend", `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Siparişiniz iletilmiştir.</div>`)
                 setTimeout(() => {
                     window.location.reload();
@@ -174,7 +198,14 @@ content.addEventListener('click', (e) => {
     }
 });
 
-
+bellekCleanButton.onclick = () => {
+    cleanAlerji("temizle")
+    content.innerHTML = ""
+    content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Alerji geçmişiniz silinmiştir.</div>`);
+    setTimeout(() => {
+        window.location.reload()
+    }, 2000);
+}
 
 async function oda_servis(user_id, user_message) {
     const requestBody = {
@@ -241,6 +272,33 @@ async function siparis(totalPrice, siparis_listesi) {
         return data
     } catch (error) {
         console.error('Mesajlar alınırken hata oluştu:', error);
+    }
+
+}
+
+async function cleanAlerji(user_message) {
+    const requestBody = {
+        "queryResult": {
+          "queryText": user_message,
+        }
+      }
+      ;
+    try {
+        const response = await fetch('http://127.0.0.1:5000/alerji', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error('Flask API yanıt vermedi.');
+        }
+
+        const data = await response.json();
+
+        return data
+    } catch (error) {
+        console.error('Alerjiler geçmişi silinirken hata oluştu:', error);
     }
 
 }
