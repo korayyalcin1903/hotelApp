@@ -1,8 +1,8 @@
 const { where, Op } = require('sequelize');
 const sequelize = require('../data/db');
 const Customer = require('../models/customer');
-const customer = require('../models/customer');
 const Menu = require('../models/menu'); 
+const Message = require('../models/message'); 
 const Order = require('../models/order');
 const Orders = require('../models/order'); 
 const OrderDetail = require('../models/orderDetail');
@@ -11,7 +11,7 @@ const OrderDetail = require('../models/orderDetail');
 exports.get_users = async (req, res) => {
     try {
         // Veritabanından tüm kullanıcıları alıyoruz
-        const users = await customer.findAll({
+        const users = await Customer.findAll({
             attributes: ['id', 'name', 'username', 'roomNumber', 'phone', 'password',  'createdAt', 'updatedAt'] // İstediğiniz kolonları belirtiyoruz
         });
 
@@ -32,7 +32,7 @@ exports.get_edit_users = async (req, res) => {
         const userid = req.params.userid;
 
         // Adminin bilgilerini veritabanından çekiyoruz
-        const user = await customer.findOne({ where: { id: userid } });
+        const user = await Customer.findOne({ where: { id: userid } });
 
         // Eğer admin bulunamazsa hata mesajı dönüyoruz
         if (!user) {
@@ -56,7 +56,7 @@ exports.post_edit_users = async (req, res) => {  // adminin bilgilerini değişt
         const { name,username, roomNumber,phone, password } = req.body; // Formdan gelen veriler
 
         // Veritabanında güncelleme işlemi yapıyoruz
-        await customer.update(
+        await Customer.update(
             { name, username, roomNumber,phone,password },
             { where: { id: userid } }
         );
@@ -73,7 +73,7 @@ exports.post_delete_users = async (req, res) => {
         const userid = req.params.userid; // Admin id'sini URL'den alıyoruz
 
         // Veritabanında admini silme işlemi
-        await customer.destroy({
+        await Customer.destroy({
             where: { id: userid }
         });
 
@@ -198,14 +198,13 @@ exports.get_order = async (req, res) => {
         const orders = await Orders.findAll({
             include: [
                 {
-                    model: customer,
+                    model: Customer,
                     as: 'customer',
                     attributes: ['name' , 'roomNumber']
                 },
             ]
         });
 
-        console.log(orders)
 
         // View'e gönderiyoruz
         res.render('admin/order', {
@@ -280,7 +279,6 @@ exports.get_order_edit = async (req, res) => {
     try {
         // URL'den order id'sini alıyoruz (userid)
         const orderid = req.params.orderid;
-        console.log(orderid)
         // Order bilgilerini veritabanından çekiyoruz
         const order = await Order.findOne({ where: { id: orderid } });
 
@@ -332,5 +330,43 @@ exports.post_edit_order = async (req, res) => {  // adminin bilgilerini değişt
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
+    }
+}
+
+
+exports.get_messages = async (req, res) => {
+    try {
+        var messages = await Message.findAll({
+            include: [
+                {
+                    model: Customer,
+                    as: 'customer'
+                },
+            ]
+        });
+
+        console.log(messages.customer)
+
+        return res.render('admin/messages', {
+            title: 'Messages',
+            messages: messages
+        });
+    } catch (error) {
+        res.status(500).send('Veri tabanınan ulaşılamıyor');
+    }
+};
+
+exports.get_message_delete = async (req, res) => {
+    try {
+        const messageId = req.params.messageid
+
+        await Message.destroy({
+            where: { id: messageId }
+        });
+
+        res.redirect('/admin/messages');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Veri tabanınan ulaşılamıyor');
     }
 }

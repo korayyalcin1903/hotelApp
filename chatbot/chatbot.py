@@ -96,7 +96,7 @@ def alerji():
 
 def handle_service_message(user_id, user_message):
     cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO messages (user_id, message) VALUES (%s, %s)", (user_id, user_message))
+    cursor.execute("INSERT INTO messages (user_id, message, createdAt, updatedAt) VALUES (%s, %s, %s, %s)", (user_id, user_message, datetime.datetime.now(), datetime.datetime.now()))
     mysql.connection.commit()
     cursor.close()
 
@@ -104,9 +104,9 @@ def handle_service_message(user_id, user_message):
 
 @app.route('/handle_message', methods=['POST'])
 def handle_message():
-    user_id = 1
     req = request.get_json(silent=True, force=True)
     user_message = req.get('queryResult').get('queryText')
+    user_id = req.get('queryResult').get('user_id')
 
     handle_service_message(user_id, user_message)
     return jsonify({'fulfillmentText': "Mesajınız iletilmiştir."})
@@ -116,15 +116,3 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-# [
-#     {
-#         "menu_item_id": 1,
-#         "quantity": 3
-#         "price": price * quantity,
-#     },
-#     {
-#         "menu_item_id": 2,
-#         "quantity": 4
-#         "price": price * quantity,
-#     },
-# ]

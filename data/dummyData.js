@@ -168,19 +168,19 @@ exports.dummyData = async () => {
 
         const messages = await Message.bulkCreate([
           {
-            "user_id": 1,
             "message": "Merhaba, siparişim ne zaman gelir?",
             "price": 5.00,
+            "user_id": 2
         },
         {
-            "user_id": 2,
             "message": "Çorba biraz soğuk geldi, tekrar ısıtılabilir mi?",
             "price": 3.50,
+            "user_id": 3
         },
         {
-            "user_id": 3,
             "message": "Patates kızartması çok lezzetliydi, teşekkürler!",
             "price": 2.00,
+            "user_id": 4
         }
       ]
       )

@@ -9,11 +9,7 @@ const Message = sequelize.define('messages', {
     message: {
         type: DataTypes.TEXT,
         allowNull: false
-    },
-    price: {
-        type: DataTypes.FLOAT,
-        allowNull: false
-    },
+    }
 }, {
     timestamps: true,
     freezeTableName: true

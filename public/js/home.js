@@ -3,6 +3,7 @@ var servisButton = document.getElementById('servis')
 var content = document.getElementById('content')
 var mesaj = document.getElementById('mesaj')
 var mesajButton = document.getElementById('mesajButton')
+var user_id = document.getElementById('userid').value
 
 window.onload = () => {
     mesaj.disabled = true;
@@ -20,7 +21,7 @@ servisButton.onclick = () => {
 mesajButton.onclick = () => {
     mesaj.innerHTML = "";
     if(servisButton.classList.contains('btn-success')){
-        oda_servis(mesaj.value).then((message) => console.log(message))
+        oda_servis(user_id, mesaj.value)
         content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Mesajınız iletilmiştir.</div>`)
     }
 
@@ -155,15 +156,12 @@ content.addEventListener('click', (e) => {
                 }
             });
 
-            console.log("Seçilen ürünler:", selectedItems);
-            console.log(selectedItems.length)
             selectedItems.forEach(item => {
                 totalPrice += item.price
             });
 
             if(selectedItems.length >0 && totalPrice > 0){
                 siparis(totalPrice, selectedItems)
-                console.log(totalPrice, selectedItems, "Sipariş başarıyla gönderildi")
                 content.innerHTML = "";
                 content.insertAdjacentHTML("beforeend", `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Siparişiniz iletilmiştir.</div>`)
                 setTimeout(() => {
@@ -178,12 +176,14 @@ content.addEventListener('click', (e) => {
 
 
 
-async function oda_servis(user_message) {
+async function oda_servis(user_id, user_message) {
     const requestBody = {
-        queryResult: {
-            queryText: user_message
+        "queryResult": {
+          "queryText": user_message,
+          "user_id": user_id
         }
-    };
+      }
+      ;
     try {
         const response = await fetch('http://127.0.0.1:5000/handle_message', {
             method: 'POST',

@@ -29,7 +29,8 @@ router.get('/order/delete/:orderid', isAdmin, adminController.get_order_delete)
 router.post('/order/edit/:orderid', isAdmin, adminController.post_edit_order)
 
 
-
+router.get('/messages', adminController.get_messages);
+router.get('/messages/delete/:messageid', isAdmin, adminController.get_message_delete)
 
 
 module.exports = router

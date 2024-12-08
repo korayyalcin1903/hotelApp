@@ -42,7 +42,6 @@ exports.verifyToken = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        console.log('JWT kontrolü sırasında hata:', error);
         return res.redirect('/auth/login'); // Token geçersizse yönlendir
     }
 };
