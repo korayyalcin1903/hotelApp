@@ -97,10 +97,7 @@ exports.post_register = async (req, res) => {
         // Başarılı kayıt sonrası token oluştur ve döndür
         const token = generateToken(newUser);
 
-        return res.json({
-            message: 'Kayıt başarılı.',
-            token: token, // Token kayıt sırasında frontend'e JSON olarak döndürülür
-        });
+        return res.redirect('/auth/login');
     } catch (error) {
         console.error('Kayıt sırasında bir hata oluştu:', error);
         res.status(500).json({ error: 'Bir hata oluştu. Lütfen tekrar deneyin.' });
