@@ -46,7 +46,7 @@ def alerji():
 
     response_text = "Merhaba, herhangi bir alerjiniz var mı?"
 
-    if any(greeting in user_message.lower() for greeting in [""]):
+    if user_message.lower() == "":
         return menu_list(allergen_list)
 
     if any(greeting in user_message.lower() for greeting in ["temizle"]):

@@ -4,6 +4,7 @@ var content = document.getElementById('content')
 var mesaj = document.getElementById('mesaj')
 var mesajButton = document.getElementById('mesajButton')
 var user_id = document.getElementById('userid').value
+var roomNumber = document.getElementById('roomNumber').value
 var bellekCleanButton = document.getElementById('bellekCleanButton')
 
 function scrolldown() {
@@ -107,7 +108,6 @@ menuButton.onclick = () => {
 
     if (menuButton.classList.contains('btn-success')) {
         menuList("merhaba").then((messages) => {
-            content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">${messages.fulfillmentText}</div>`);
             content.insertAdjacentHTML('beforeend', `
                                                         <div class="row mx-md-5 mb-3 justify-content-center">
                                                             <button class="col-5 btn btn-danger border mx-1 evet">
@@ -240,8 +240,8 @@ async function siparis(totalPrice, siparis_listesi) {
         "queryResult": {
           "queryText": "siparis",
           "totalPrice": totalPrice,
-          "customer_id": 2,
-          "roomNumber": 103,
+          "customer_id": user_id,
+          "roomNumber": roomNumber,
           "id_list": [
             
           ]
