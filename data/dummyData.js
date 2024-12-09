@@ -19,7 +19,7 @@ exports.dummyData = async () => {
             {
                 "name": "Ali Yılmaz",
                 "username": "ali.yilmaz",
-                "password": "securepassword123",
+                "password": "1234",
                 "roomNumber": 101,
                 "phone": 5551234567,
                 "isAdmin": 0

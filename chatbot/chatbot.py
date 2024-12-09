@@ -11,7 +11,7 @@ allergen_list = []
 
 def menu_list(allergen_list):
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM hotel_db.menu_items WHERE availability = TRUE")
+    cursor.execute("SELECT * FROM sql7750882.menu_items WHERE availability = TRUE")
     yemek_listesi = cursor.fetchall()
 
 
@@ -58,7 +58,7 @@ def alerji():
         
         # `orders` tablosuna bir sipariş ekleme
         cursor.execute(
-            "INSERT INTO hotel_db.orders (totalPrice, customer_id, roomNumber, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s)",
+            "INSERT INTO sql7750882.orders (totalPrice, customer_id, roomNumber, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s)",
             (totalPrice, customer_id, roomNumber, datetime.datetime.now(), datetime.datetime.now())
         )
         
@@ -72,7 +72,7 @@ def alerji():
             
             # `order_details` tablosuna her sipariş detayı ekleme
             cursor.execute(
-                "INSERT INTO hotel_db.order_details (quantity, menu_item_id, price, order_id, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s, %s)",
+                "INSERT INTO sql7750882.order_details (quantity, menu_item_id, price, order_id, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s, %s)",
                 (quantity, menu_item_id, price, order_id, datetime.datetime.now(), datetime.datetime.now())
             )
         
@@ -123,3 +123,11 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
+@app.route('/test_connection')
+def test_connection():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT 1")
+        return "Bağlantı başarılı!"
+    except Exception as e:
+        return f"Bağlantı hatası: {e}"

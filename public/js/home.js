@@ -79,7 +79,7 @@ async function menuList(user_message) {
         }
     };
     try {
-        const response = await fetch('http://127.0.0.1:5000/alerji', {
+        const response = await fetch('https://chatbot-9w8a.onrender.com/alerji', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -216,7 +216,7 @@ async function oda_servis(user_id, user_message) {
       }
       ;
     try {
-        const response = await fetch('http://127.0.0.1:5000/handle_message', {
+        const response = await fetch('https://chatbot-9w8a.onrender.com/handle_message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -257,7 +257,7 @@ async function siparis(totalPrice, siparis_listesi) {
       });
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/alerji', {
+        const response = await fetch('https://chatbot-9w8a.onrender.com/alerji', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -284,7 +284,7 @@ async function cleanAlerji(user_message) {
       }
       ;
     try {
-        const response = await fetch('http://127.0.0.1:5000/alerji', {
+        const response = await fetch('https://chatbot-9w8a.onrender.com/alerji', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
