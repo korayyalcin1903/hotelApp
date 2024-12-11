@@ -3,6 +3,7 @@ const Menu = require('../models/menu')
 const Message = require('../models/message')
 const Order = require('../models/order')
 const OrderDetail = require('../models/orderDetail')
+const UserAllergen = require('../models/user_allergen')
 
 exports.dummyData = async () => {
     if(await Customer.count() === 0) {
@@ -27,7 +28,7 @@ exports.dummyData = async () => {
             {
                 "name": "Ayşe Demir",
                 "username": "ayse.demir",
-                "password": "mypassword456",
+                "password": "1234",
                 "roomNumber": 102,
                 "phone": 5559876543,
                 "isAdmin": 0
@@ -184,6 +185,8 @@ exports.dummyData = async () => {
         }
       ]
       )
+
+      const user_allergen = await UserAllergen.bulkCreate([])
 
     }
 }

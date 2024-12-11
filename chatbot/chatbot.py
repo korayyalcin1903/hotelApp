@@ -7,19 +7,24 @@ from config import app
 mysql = MySQL(app)
 CORS(app)
 
-allergen_list = []
+from flask import jsonify
 
-def menu_list(allergen_list):
+def menu_list(user_id):
     cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT allergen FROM sql7750882.user_allergens WHERE user_id = %s", (user_id,))
+    user_allergens = [row['allergen'] for row in cursor.fetchall()]
+
+    # Yemek listesini al
     cursor.execute("SELECT * FROM sql7750882.menu_items WHERE availability = TRUE")
     yemek_listesi = cursor.fetchall()
 
-
     uygun_yemekler = [
         yemek for yemek in yemek_listesi
-        if not any(allergen in yemek['description'].lower() for allergen in allergen_list)
+        if not any(allergen.lower() in yemek['description'].lower() for allergen in user_allergens)
     ]
 
+    # Sonuçları döndür
     if uygun_yemekler:
         return jsonify({
             'fulfillmentText': "Uygun yemekler:",
@@ -32,6 +37,7 @@ def menu_list(allergen_list):
             'fulfillmentText': "Alerjenleriniz nedeniyle uygun bir yemek bulunmamaktadır."
         })
 
+
 ############# Menü #######################################
 @app.route('/alerji', methods=['POST'])
 def alerji():
@@ -41,28 +47,28 @@ def alerji():
     totalPrice = request.get_json().get('queryResult').get('totalPrice')
     customer_id = request.get_json().get('queryResult').get('customer_id')
     roomNumber = request.get_json().get('queryResult').get('roomNumber')
-
-    global allergen_list
+    user_id = request.get_json().get('queryResult').get('user_id')
 
     response_text = "Merhaba, herhangi bir alerjiniz var mı?"
 
     if user_message.lower() == "":
-        return menu_list(allergen_list)
+        return menu_list(user_id)
 
     if any(greeting in user_message.lower() for greeting in ["temizle"]):
-        allergen_list.clear()
-        return allergen_list
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM sql7750882.user_allergens WHERE user_id = %s", (user_id,))
+        mysql.connection.commit()
+
+        return jsonify({'fulfillmentText': "Tüm alerjenler başarıyla silindi."})
 
     if siparisler:
         cursor = mysql.connection.cursor()
         
-        # `orders` tablosuna bir sipariş ekleme
         cursor.execute(
             "INSERT INTO sql7750882.orders (totalPrice, customer_id, roomNumber, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s)",
             (totalPrice, customer_id, roomNumber, datetime.datetime.now(), datetime.datetime.now())
         )
         
-        # Eklenen siparişin `order_id` değerini al
         order_id = cursor.lastrowid
         
         for siparis in siparisler:
@@ -70,13 +76,11 @@ def alerji():
             quantity = siparis.get('quantity')
             price = siparis.get('price')
             
-            # `order_details` tablosuna her sipariş detayı ekleme
             cursor.execute(
                 "INSERT INTO sql7750882.order_details (quantity, menu_item_id, price, order_id, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s, %s)",
                 (quantity, menu_item_id, price, order_id, datetime.datetime.now(), datetime.datetime.now())
             )
         
-        # Veritabanı işlemini tamamla
         mysql.connection.commit()
         cursor.close()
         
@@ -86,15 +90,26 @@ def alerji():
         return jsonify({'fulfillmentText': response_text})
 
     if user_message.lower() not in ["merhaba", "yemek listesi", "menüyü göster", "ne yemek var", "yemekleri listele", "menü", "yemek"]:
-        allergen_list.append(user_message.lower())
-        if user_message.lower() in "yok":
-            return menu_list(allergen_list)
+
+        cursor = mysql.connection.cursor()
+
+        if user_message.lower() == "yok":
+            return menu_list(user_id)
         else:
-            return jsonify({'fulfillmentText': f"Alerjiniz kaydedildi: {user_message}."})
+            try:
+                cursor.execute(
+                    "INSERT INTO sql7750882.user_allergens (user_id, allergen) VALUES (%s, %s)",
+                    (user_id, user_message.lower())
+                )
+                mysql.connection.commit()
+
+                return jsonify({'fulfillmentText': f"Alerjiniz kaydedildi: {user_message}."})
+            except Exception as e:
+                return jsonify({'fulfillmentText': f"Alerji kaydedilirken bir hata oluştu: {str(e)}"})
             
 
     if any(keyword in user_message for keyword in ["yemek listesi", "menüyü göster", "ne yemek var", "yemekleri listele", "menü", "yemek"]):
-        return menu_list(allergen_list)
+        return menu_list(user_id)
     
 
     return jsonify({'fulfillmentText': response_text})

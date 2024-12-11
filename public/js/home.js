@@ -44,26 +44,29 @@ mesajButton.onclick = () => {
     scrolldown()
 
     if(evet.classList.contains('btn-warning')){
-        menuList(mesaj.value).then((messages) => {
+        menuList(mesaj.value, user_id).then((messages) => {
             content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">${messages.fulfillmentText}</div>`)
             mesaj.value = "";
         })
-        menuList("menü").then((menu) => {
-            menu.payload.menu.forEach(food => {
-                content.insertAdjacentHTML('beforeend', `<div class="d-flex border-bottom">
-                                                            <div class="form-check col-12">
-                                                                <input class="form-check-input col-2" type="checkbox" value="${food.id}" id="menu-${food.id}">
-                                                                <label class="form-check-label col-6">
-                                                                    ${food.name}
-                                                                </label>
-                                                                <label class="form-check-label col-4">
-                                                                    ${food.price}
-                                                                </label>
-                                                            </div>
-                                                        </div>`)
-                                                    });
-                content.insertAdjacentHTML('beforeend', `<button class="btn btn-outline-success mt-3" id="siparisVer"> Sipariş ver </button>`)
-        })
+        setTimeout(() => {
+            
+            menuList("menü", user_id).then((menu) => {
+                menu.payload.menu.forEach(food => {
+                    content.insertAdjacentHTML('beforeend', `<div class="d-flex border-bottom">
+                                                                <div class="form-check col-12">
+                                                                    <input class="form-check-input col-2" type="checkbox" value="${food.id}" id="menu-${food.id}">
+                                                                    <label class="form-check-label col-6">
+                                                                        ${food.name}
+                                                                    </label>
+                                                                    <label class="form-check-label col-4">
+                                                                        ${food.price}
+                                                                    </label>
+                                                                </div>
+                                                            </div>`)
+                                                        });
+                    content.insertAdjacentHTML('beforeend', `<button class="btn btn-outline-success mt-3" id="siparisVer"> Sipariş ver </button>`)
+            })
+        }, 2000);
         scrolldown()
     }
 
@@ -72,10 +75,11 @@ mesajButton.onclick = () => {
     scrolldown()
 }
 
-async function menuList(user_message) {
+async function menuList(user_message, user_id) {
     const requestBody = {
         queryResult: {
-            queryText: user_message
+            queryText: user_message,
+            user_id: user_id
         }
     };
     try {
@@ -107,7 +111,7 @@ menuButton.onclick = () => {
     scrolldown()
 
     if (menuButton.classList.contains('btn-success')) {
-        menuList("merhaba").then((messages) => {
+        menuList("merhaba", user_id).then((messages) => {
             content.insertAdjacentHTML('beforeend', `
                                                         <div class="row mx-md-5 mb-3 justify-content-center">
                                                             <button class="col-5 btn btn-danger border mx-1 evet">
@@ -136,7 +140,7 @@ menuButton.onclick = () => {
             hayir.onclick = () => {
                 evet.disabled = true;
                 hayir.disabled = true;
-                menuList("menü").then((menu) => {
+                menuList("menü", user_id).then((menu) => {
                     menu.payload.menu.forEach(food => {
                         content.insertAdjacentHTML('beforeend', `<div class="d-flex border-bottom">
                                                                     <div class="form-check col-12">
@@ -167,7 +171,7 @@ content.addEventListener('click', (e) => {
         
         let selectedItems = [];
         
-        menuList("menü").then((menu) => {
+        menuList("menü", user_id).then((menu) => {
             menu.payload.menu.forEach(food => {
                 const checkbox = document.getElementById("menu-" + food.id);
                 
@@ -199,7 +203,7 @@ content.addEventListener('click', (e) => {
 });
 
 bellekCleanButton.onclick = () => {
-    cleanAlerji("temizle")
+    cleanAlerji("temizle", user_id)
     content.innerHTML = ""
     content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Alerji geçmişiniz silinmiştir.</div>`);
     setTimeout(() => {
@@ -276,10 +280,11 @@ async function siparis(totalPrice, siparis_listesi) {
 
 }
 
-async function cleanAlerji(user_message) {
+async function cleanAlerji(user_message, user_id) {
     const requestBody = {
         "queryResult": {
           "queryText": user_message,
+          "user_id": user_id
         }
       }
       ;
