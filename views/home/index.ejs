@@ -9,7 +9,7 @@
 
     </style>
 </head>
-<body data-bs-theme="dark">
+<body>
     <%- include('../partials/nav') %>
     <div class="container">
         <input type="hidden" name="userid" id="userid" value="<%= userid %>">
@@ -17,7 +17,7 @@
         <hr style="margin-top: 5rem;">
         
         <div class="mx-md-5  d-flex flex-column">
-            <div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Merhaba <b><%= name %></b> size nasıl yardımcı olabilirim?</div>
+            <div class="border w-75 ms-auto p-2 mb-3 rounded">Merhaba <b><%= name %></b> size nasıl yardımcı olabilirim?</div>
         </div>
         
         <div class="row mx-md-5 mb-3 justify-content-center">
@@ -34,10 +34,10 @@
             
         </div>
 
-        <div class="d-flex justify-content-center align-items-center position-fixed bottom-0 start-50 translate-middle-x pb-3 bg-dark" id="entry-input">
-            <input type="text" id="mesaj" class="form-control border-warning-subtle py-2">
-            <button id="mesajButton" class="input-group-text px-2 py-2 btn btn-outline-warning"><i class="bi bi-arrow-up"></i></button>
-            <button id="bellekCleanButton" class="input-group-text px-2 py-2 btn btn-outline-info">Bellek Temizle</button>
+        <div class="d-flex justify-content-center align-items-center position-fixed bottom-0 start-50 translate-middle-x pb-3" id="entry-input">
+            <input type="text" id="mesaj" class="form-control border-dark-subtle py-2">
+            <button id="mesajButton" class="input-group-text px-2 py-2 btn btn-warning"><i class="bi bi-arrow-up"></i></button>
+            <button id="bellekCleanButton" class="input-group-text px-2 py-2 btn btn-info">Bellek Temizle</button>
         </div>
     </div>
 

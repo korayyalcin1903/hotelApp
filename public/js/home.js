@@ -7,6 +7,8 @@ var user_id = document.getElementById('userid').value
 var roomNumber = document.getElementById('roomNumber').value
 var bellekCleanButton = document.getElementById('bellekCleanButton')
 
+const apiUrl = "https://chatbot-9w8a.onrender.com"
+
 function scrolldown() {
     setTimeout(function () {
         window.scrollTo({
@@ -26,7 +28,7 @@ servisButton.onclick = () => {
     servisButton.classList.add('btn-success')
     servisButton.disabled = true;
     menuButton.disabled = true;
-    content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Lütfen mesajınızı giriniz.</div>`)
+    content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb">Lütfen mesajınızı giriniz.</div>`)
     mesaj.disabled = false;
     scrolldown()
 }
@@ -34,9 +36,12 @@ servisButton.onclick = () => {
 mesajButton.onclick = () => {
     if(servisButton.classList.contains('btn-success')){
         oda_servis(user_id, mesaj.value)
-        content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Mesajınız iletilmiştir.</div>`)
+        content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb">Mesajınız iletilmiştir.</div>`)
         mesaj.value = ""
         mesaj.disabled = true;
+        setTimeout(() => {
+            window.location.reload()
+        }, 2000);
     }
 
     var evet = document.querySelector('.evet');
@@ -45,7 +50,7 @@ mesajButton.onclick = () => {
 
     if(evet.classList.contains('btn-warning')){
         menuList(mesaj.value, user_id).then((messages) => {
-            content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">${messages.fulfillmentText}</div>`)
+            content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded">${messages.fulfillmentText}</div>`)
             mesaj.value = "";
         })
         setTimeout(() => {
@@ -83,7 +88,7 @@ async function menuList(user_message, user_id) {
         }
     };
     try {
-        const response = await fetch('https://chatbot-9w8a.onrender.com/alerji', {
+        const response = await fetch(""+apiUrl+"/alerji", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -112,6 +117,7 @@ menuButton.onclick = () => {
 
     if (menuButton.classList.contains('btn-success')) {
         menuList("merhaba", user_id).then((messages) => {
+            content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded">Herhangi bir alerjiniz var mı?.</div>`);
             content.insertAdjacentHTML('beforeend', `
                                                         <div class="row mx-md-5 mb-3 justify-content-center">
                                                             <button class="col-5 btn btn-danger border mx-1 evet">
@@ -134,7 +140,7 @@ menuButton.onclick = () => {
                 evet.disabled = true
                 evet.classList.remove('btn-danger')
                 evet.classList.add('btn-warning')
-                content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Lütfen alerjinizi giriniz.</div>`);
+                content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded">Lütfen alerjinizi giriniz.</div>`);
             };
 
             hayir.onclick = () => {
@@ -191,7 +197,7 @@ content.addEventListener('click', (e) => {
             if(selectedItems.length >0 && totalPrice > 0){
                 siparis(totalPrice, selectedItems)
                 content.value = "";
-                content.insertAdjacentHTML("beforeend", `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Siparişiniz iletilmiştir.</div>`)
+                content.insertAdjacentHTML("beforeend", `<div class="border w-75 ms-auto p-2 mb-3 rounded">Siparişiniz iletilmiştir.</div>`)
                 setTimeout(() => {
                     window.location.reload();
                 }, 3000);
@@ -205,7 +211,7 @@ content.addEventListener('click', (e) => {
 bellekCleanButton.onclick = () => {
     cleanAlerji("temizle", user_id)
     content.innerHTML = ""
-    content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded bg-dark">Alerji geçmişiniz silinmiştir.</div>`);
+    content.insertAdjacentHTML('beforeend', `<div class="border w-75 ms-auto p-2 mb-3 rounded">Alerji geçmişiniz silinmiştir.</div>`);
     setTimeout(() => {
         window.location.reload()
     }, 2000);
@@ -220,7 +226,7 @@ async function oda_servis(user_id, user_message) {
       }
       ;
     try {
-        const response = await fetch('https://chatbot-9w8a.onrender.com/handle_message', {
+        const response = await fetch(""+apiUrl+"/handle_message", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -261,7 +267,7 @@ async function siparis(totalPrice, siparis_listesi) {
       });
 
     try {
-        const response = await fetch('https://chatbot-9w8a.onrender.com/alerji', {
+        const response = await fetch(""+apiUrl+"/alerji", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -289,7 +295,7 @@ async function cleanAlerji(user_message, user_id) {
       }
       ;
     try {
-        const response = await fetch('https://chatbot-9w8a.onrender.com/alerji', {
+        const response = await fetch(""+apiUrl+"/alerji", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)

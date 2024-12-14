@@ -7,16 +7,18 @@ from config import app
 mysql = MySQL(app)
 CORS(app)
 
+dbName = "sql7750882"
+
 from flask import jsonify
 
 def menu_list(user_id):
     cursor = mysql.connection.cursor()
 
-    cursor.execute("SELECT allergen FROM sql7750882.user_allergens WHERE user_id = %s", (user_id,))
+    cursor.execute(f"SELECT allergen FROM {dbName}.user_allergens WHERE user_id = %s", (user_id,))
     user_allergens = [row['allergen'] for row in cursor.fetchall()]
 
     # Yemek listesini al
-    cursor.execute("SELECT * FROM sql7750882.menu_items WHERE availability = TRUE")
+    cursor.execute(f"SELECT * FROM {dbName}.menu_items WHERE availability = TRUE")
     yemek_listesi = cursor.fetchall()
 
     uygun_yemekler = [
@@ -56,7 +58,7 @@ def alerji():
 
     if any(greeting in user_message.lower() for greeting in ["temizle"]):
         cursor = mysql.connection.cursor()
-        cursor.execute("DELETE FROM sql7750882.user_allergens WHERE user_id = %s", (user_id,))
+        cursor.execute(f"DELETE FROM {dbName}.user_allergens WHERE user_id = %s", (user_id,))
         mysql.connection.commit()
 
         return jsonify({'fulfillmentText': "Tüm alerjenler başarıyla silindi."})
@@ -64,8 +66,7 @@ def alerji():
     if siparisler:
         cursor = mysql.connection.cursor()
         
-        cursor.execute(
-            "INSERT INTO sql7750882.orders (totalPrice, customer_id, roomNumber, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s)",
+        cursor.execute(f"INSERT INTO {dbName}.orders (totalPrice, customer_id, roomNumber, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s)",
             (totalPrice, customer_id, roomNumber, datetime.datetime.now(), datetime.datetime.now())
         )
         
@@ -76,8 +77,7 @@ def alerji():
             quantity = siparis.get('quantity')
             price = siparis.get('price')
             
-            cursor.execute(
-                "INSERT INTO sql7750882.order_details (quantity, menu_item_id, price, order_id, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s, %s)",
+            cursor.execute(f"INSERT INTO {dbName}.order_details (quantity, menu_item_id, price, order_id, createdAt, updatedAt) VALUES (%s, %s, %s, %s, %s, %s)",
                 (quantity, menu_item_id, price, order_id, datetime.datetime.now(), datetime.datetime.now())
             )
         
@@ -97,8 +97,7 @@ def alerji():
             return menu_list(user_id)
         else:
             try:
-                cursor.execute(
-                    "INSERT INTO sql7750882.user_allergens (user_id, allergen) VALUES (%s, %s)",
+                cursor.execute(f"INSERT INTO {dbName}.user_allergens (user_id, allergen) VALUES (%s, %s)",
                     (user_id, user_message.lower())
                 )
                 mysql.connection.commit()
@@ -118,7 +117,7 @@ def alerji():
 
 def handle_service_message(user_id, user_message):
     cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO messages (user_id, message, createdAt, updatedAt) VALUES (%s, %s, %s, %s)", (user_id, user_message, datetime.datetime.now(), datetime.datetime.now()))
+    cursor.execute(f"INSERT INTO messages (user_id, message, createdAt, updatedAt) VALUES (%s, %s, %s, %s)", (user_id, user_message, datetime.datetime.now(), datetime.datetime.now()))
     mysql.connection.commit()
     cursor.close()
 
@@ -142,7 +141,7 @@ if __name__ == '__main__':
 def test_connection():
     try:
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT 1")
+        cursor.execute(f"SELECT 1")
         return "Bağlantı başarılı!"
     except Exception as e:
         return f"Bağlantı hatası: {e}"

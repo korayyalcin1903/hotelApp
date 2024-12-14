@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql2');
 
 const port = process.env.PORT || 3000;
 
@@ -18,33 +17,6 @@ const sequelize = require('./data/db');
 
 // Middleware: Body parsing
 app.use(express.urlencoded({ extended: true }));
-
-
-
-const pool = mysql.createPool({
-    host: config.db.host,   
-    user: config.db.user,      
-    password: config.db.password,        
-    database: config.db.database,
-});
-
-let lastChecked = new Date(0);
-
-async function checkForNewOrders() {
-  try {
-    const [rows] = await pool.promise().query('SELECT * FROM orders WHERE createdAt > ?', [lastChecked]);
-    if (rows.length > 0) {
-      console.log('Yeni sipariş var!');
-      // Burada bildirim gönderme işlemleri (email, SMS, etc.)
-      lastChecked = new Date(); // Son kontrol zamanını güncelle
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Belirli bir aralıkta kontrol et
-setInterval(checkForNewOrders, 5000); // Her 5 saniyede bir kontrol et
 
 // Middleware: Session
 app.use(
