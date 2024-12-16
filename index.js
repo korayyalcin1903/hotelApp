@@ -16,7 +16,6 @@ const sequelize = require('./data/db');
 // Middleware: Body parsing
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware: Session
 app.use(
     session({
         secret: 'bst4_123', 
