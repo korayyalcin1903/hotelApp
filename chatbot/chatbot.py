@@ -7,7 +7,7 @@ from config import app
 mysql = MySQL(app)
 CORS(app)
 
-dbName = "sql7750882"
+dbName = "defaultdb"
 
 from flask import jsonify
 

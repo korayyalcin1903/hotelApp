@@ -3,7 +3,6 @@ const router = express.Router()
 
 const homeController = require('../controllers/home')
 const isAuth = require('../middlewares/isAuth')
-const { verifyToken } = require('../middlewares/authentication')
 
 router.get('/', isAuth, homeController.index)
 

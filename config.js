@@ -1,9 +1,10 @@
 const config = {
     db: {
-        host: 'sql7.freemysqlhosting.net',
-        user: 'sql7750882',
-        password: '5HrxtZfUy3',
-        database: 'sql7750882'
+        host: 'mysql-e36cc52-prensyor-5b64.k.aivencloud.com',
+        port: 15684,
+        user: 'avnadmin',
+        password: 'AVNS_DHHTqi3Ep9EJ6InEeLQ',
+        database: 'defaultdb'
     }
 }
 

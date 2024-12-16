@@ -25,9 +25,7 @@
                                     <label for="email" class="form-label mb-3">Kullanıcı adı</label>
                                     <input type="text" name="username" class="form-control">
                                     <% if (message) { %>
-                                        <script type="text/javascript">
-                                            alert("<%= message %>"); // message değişkenini JavaScript alert ile göster
-                                        </script>
+                                        <div class="text-danger"><%= message %></div>
                                     <% } %>
                                 </div>
                                 <div class="mb-3 mt-5 mx-5">
@@ -42,8 +40,9 @@
                                     <label for="password" class="form-label mb-3">Password</label>
                                     <input type="password" name="password" class="form-control">
                                 </div>
-                                <div class="d-flex justify-content-center my-5">
+                                <div class="d-flex justify-content-center mx-5 my-5">
                                     <button type="submit" class="btn btn-outline-dark d-block w-75">Kayıt Ol</button>
+                                    <a href="/auth/login" class="btn btn-outline-info d-block w-75 mx-1">Giriş Yap</a>
                                 </div>
                             </div>
                         </form>

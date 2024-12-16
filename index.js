@@ -6,8 +6,6 @@ const port = process.env.PORT || 3000;
 const session = require('express-session');
 const path = require('path');
 
-const config = require('./config');
-
 app.set('view engine', 'ejs');
 
 const homeRoutes = require('./routers/home');
@@ -53,7 +51,7 @@ const dummyData = require('./data/dummyData');
 relations.relations();
 
 async function data() {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     await dummyData.dummyData();
 }
 

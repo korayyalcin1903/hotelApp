@@ -22,14 +22,14 @@ router.get('/menu/create', isAdmin, adminController.get_menu_create)
 router.post('/menu/create', isAdmin, adminController.post_menu_create)
 
 
-router.get('/order', adminController.get_order);
-router.get('/order/:orderid', adminController.get_order_details);
+router.get('/order', isAdmin, adminController.get_order);
+router.get('/order/:orderid',isAdmin, adminController.get_order_details);
 router.get('/order/edit/:orderid', isAdmin, adminController.get_order_edit)
 router.get('/order/delete/:orderid', isAdmin, adminController.get_order_delete)
 router.post('/order/edit/:orderid', isAdmin, adminController.post_edit_order)
 
 
-router.get('/messages', adminController.get_messages);
+router.get('/messages',isAdmin, adminController.get_messages);
 router.get('/messages/delete/:messageid', isAdmin, adminController.get_message_delete)
 
 
